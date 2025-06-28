@@ -53,9 +53,9 @@ Task** createTaskArray(int size,int taskCount,enum type, User user) {
 			if (option == 2) {
 				break;
 			}
+		}
+		return arr;
 	}
-	return arr;
-}
 void deleteTaskAt(Task * *arr, int& taskCount, int index) {
 		if (index < 0 || index >= taskCount) {
 			cout << "Invalid index to delete!"<<endl;
@@ -69,6 +69,40 @@ void deleteTaskAt(Task * *arr, int& taskCount, int index) {
 		arr[taskCount - 1] = nullptr; 
 		taskCount--; 
 	}
+void searchByPriority(Task** arr, int taskCount, int priority) {
+	cout << "Tasks with such priority: " << priority << ":\n";
+	bool found = false;
+	for (int i = 0; i < taskCount; ++i) {
+		if (arr[i]->priority == priority) {
+			cout << i + 1 << ". " << arr[i]->title << " | Deadline: " << arr[i]->deadline << endl;
+			found = true;
+		}
+	}
+	if (!found) cout << "Not found"<<endl;
+}
+void searchByDeadline(Task** arr, int taskCount, const string& deadline) {
+	cout << "Tasks with such deadline: " << deadline << ":"<<endl;
+	bool found = false;
+	for (int i = 0; i < taskCount; ++i) {
+		if (arr[i]->deadline == deadline) {
+			cout << i + 1 << ". " << arr[i]->title << " | Priority: " << arr[i]->priority << endl;
+			found = true;
+		}
+	}
+	if (!found) cout << "Not found" << endl;
+}
+void searchByUser(Task** arr, int taskCount, int userId) {
+	cout << "Tasks with such ID = " << userId << ":"<<endl;
+	bool found = false;
+	for (int i = 0; i < taskCount; ++i) {
+		if (arr[i]->user.id == userId) {
+			cout << i + 1 << ". " << arr[i]->title << " | Deadline: " << arr[i]->deadline << endl;
+			found = true;
+		}
+	}
+	if (!found) cout << "Not found" << endl;
+}
+
 void main()
 {
 	int id = 1;
@@ -79,7 +113,7 @@ void main()
 	int tasksCount = 0;
 	
 
-	cout << "Choice an option: 1-add task, 2-delete task, 3-mark done" << endl;
+	cout << "Choice an option: 1-add task, 2-delete task, 3-mark done, 4-search by priority, 5-search by deadline, 6-search by ID" << endl;
 	switch (option) {
 	case 1:
 		Task * *tasks = createTaskArray(maxTasks, tasksCount);
@@ -103,4 +137,25 @@ void main()
 			tasks[num]->done = true;
 			cout << "Task #" << num << " marked as done." << endl;
 		}
+		break;
+	case 4:
+		int priority;
+		cout << "Enter the priority to search for: ";
+		cin >> priority;
+		searchByPriority(tasks, tasksCount, priority);
+		break;
+	case 5:
+		string deadline;
+		cout << "Enter the deadline to search for: ";
+		cin.ignore();
+		getline(cin, deadline);
+		searchByDeadline(tasks, tasksCount, deadline);
+		break;
+	case 6:
+		int userId;
+		cout << "Enter the user ID to search for: ";
+		cin >> userId;
+		searchByUser(tasks, tasksCount, userId);
+		break;
+
 }
